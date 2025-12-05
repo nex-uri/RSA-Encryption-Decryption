@@ -25,6 +25,7 @@ namespace RSA_Encryption___Decryption
             Console.WriteLine($"The data has been SENT to the instance.");
             data_encryption_message();
         }
+
         public void data_encryption_message()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -72,8 +73,7 @@ namespace RSA_Encryption___Decryption
         }
         public void SendData()
         {
-            output_ed send_data = new output_ed(receiver_prime_d, encrypted_arr);
-            decryption_message send_data_dec = new decryption_message(receiver_prime_d, receiver_prime_n, encrypted_arr);
+            output_ed send_data = new output_ed(receiver_prime_d, receiver_prime_n, encrypted_arr);
         }
     }
 }

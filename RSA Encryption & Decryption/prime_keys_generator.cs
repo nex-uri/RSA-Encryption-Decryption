@@ -37,50 +37,7 @@
                 Environment.Exit(0);
             }
         }
-        public long priv_prime_p
-        {
-            get
-            {
-                return prime_p;
-            }
-            set
-            {
-                prime_p = value;
-            }
-        }
-        public long priv_prime_q
-        {
-            get
-            {
-                return prime_q;
-            }
-            set
-            {
-                prime_q = value;
-            }
-        }
-        public long priv_prime_n
-        {
-            get
-            {
-                return prime_n;
-            }
-            set
-            {
-                prime_n = value;
-            }
-        }
-        public long priv_prime_on
-        {
-            get
-            {
-                return prime_on;
-            }
-            set
-            {
-                prime_on = value;
-            }
-        }
+
         public void data_largest_value()
         {
             if (receiver_data_arr.Length == 0)

@@ -8,16 +8,6 @@
         private long[] value;
         public int index;
 
-        public message_value(long[] data_arr)
-        {
-            receiver_decrypted_data = data_arr;
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("[OK] \t\t");
-            Console.ResetColor();
-            Console.WriteLine($"The data has been SENT to the instance.");
-            decrypt_message();
-        }
         public message_value()
         {
             _char =
@@ -59,7 +49,7 @@
             index = -1;
         }
 
-        public void IncreaseSize()
+        private void IncreaseSize()
         {
             long[] new_size_arr = new long[value.Length + 1];
             for (int i = 0; i < value.Length; i++)
@@ -68,38 +58,11 @@
             }
             value = new_size_arr;
         }
-        public void DecreaseSize()
-        {
-            long[] new_size_arr = new long[value.Length - 1];
-            for (long i = 0; i < new_size_arr.Length; i++)
-            {
-                new_size_arr[i] = value[i];
-            }
-            value = new_size_arr;
-        }
-        public void decrypt_message()
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[LOG] \t\t");
-            Console.ResetColor();
-            Console.WriteLine($"Converting of each ASCII value into a character.");
-
-            foreach (long value in receiver_decrypted_data)
-            {
-                for (int i = 0; i < ascii_value.Length; i++)
-                {
-                    if (value == ascii_value[i])
-                    {
-                        receiver_decrypted_data[i] = _char[i];
-                        break;
-                    }
-                }
-                Console.WriteLine(value);
-            }
-        }
         public void message(string input)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n---------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("[LOG] \t\t");
             Console.ResetColor();

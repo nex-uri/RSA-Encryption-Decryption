@@ -1,47 +1,113 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace RSA_Encryption___Decryption
 {
     internal class decryption_message
     {
-        private readonly long receiver_prime_d;
-        private readonly long receiver_prime_n;
-        private readonly long[] receiver_encrypted_arr;
+        private readonly char[] _char;
+        private readonly long[] ascii_value;
         private long[] decrypted_arr;
+        public int index;
 
-        public decryption_message(long decryption_key, long prime_key_n, long[] data_arr)
+        public decryption_message()
         {
-            receiver_prime_d = decryption_key;
-            receiver_prime_n = prime_key_n;
-            receiver_encrypted_arr = data_arr;
+            _char =
+            [
+                // Digits (0-9)
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    
+                // Lowercase Letters (a-z)
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    
+                // Uppercase Letters (A-Z)
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+
+                // Punctuation and Symbols 
+                '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-',
+                '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^',
+                '_', '`', '{', '|', '}', '~', ' ' // Note: ' ' is the space character
+            ];
+            ascii_value =
+            [
+                // Digits Converted From (0-9)
+                48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
+    
+                // Lowercase Converted From (a-z)
+                97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
+                110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122,
+    
+                // Uppercase Converted From (A-Z)
+                65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+                81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+
+                // Punctuation and Symbols Converted From (!-' ')
+                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+                58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126, 32
+            ];
+            decrypted_arr = Array.Empty<long>();
+            index = -1;
         }
-        public void data_decryption_message(long decryption_key)
-        {
-            int trigger = -1;
 
+        private void IncreaseSize()
+        {
+            long[] new_size_arr = new long[decrypted_arr.Length + 1];
+            for (int i = 0; i < decrypted_arr.Length; i++)
+            {
+                new_size_arr[i] = decrypted_arr[i];
+            }
+            decrypted_arr = new_size_arr;
+        }
+        public void add_arr(string data_arr)
+        {
+            string character = "";
+            foreach (char c in data_arr)
+            {
+                if (char.IsWhiteSpace(c))
+                {
+                    index++;
+                    IncreaseSize();
+
+                    long converted_value = Convert.ToInt64(character);
+                    decrypted_arr[index] = converted_value;
+                    character = "";
+                }
+                else
+                {
+                    character += c;
+                }
+            }
+            index++;
+            IncreaseSize();
+
+            long converted_value_end = Convert.ToInt64(character);
+            decrypted_arr[index] = converted_value_end;
+            character = "";
+        }
+        public void data_decryption_message(long prime_key_n, long decryption_key)
+        {
             Console.WriteLine("\n---------------------------------------------------------------------------------------------------");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("[LOG] \t\t");
             Console.ResetColor();
             Console.WriteLine($"Decrypting the message...");
 
-            if (decryption_key == receiver_prime_d && receiver_prime_d != 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("[OK] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"The inputted decryption key MATCHES with the system-made key.");
+            int trigger = -1;
 
-                for (int i = 0; i < receiver_encrypted_arr.Length; i++)
+            if (decryption_key != 0)
+            {
+                for (int i = 0; i < decrypted_arr.Length; i++)
                 {
-                    decrypted_arr[i] = (long)BigInteger.ModPow(receiver_encrypted_arr[i], receiver_prime_d, receiver_prime_n);
+                    decrypted_arr[i] = (long)BigInteger.ModPow(decrypted_arr[i], decryption_key, prime_key_n);
 
                     if (decrypted_arr[i] > 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("[OK] \t\t");
                         Console.ResetColor();
-                        Console.WriteLine($"A single character has been DECRYPTED.");
+                        Console.WriteLine($"A single encrypted message has been DECRYPTED.");
                         trigger = 0;
                     }
                     else
@@ -66,7 +132,7 @@ namespace RSA_Encryption___Decryption
                     Console.Write("[LOG] \t\t");
                     Console.ResetColor();
                     Console.WriteLine($"Sending the data to another instance for an output.");
-                    SendData();
+                    decrypt_message();
                 }
             }
             else
@@ -74,12 +140,28 @@ namespace RSA_Encryption___Decryption
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("[ERROR] \t");
                 Console.ResetColor();
-                Console.WriteLine($"The inputted decryption key DOES NOT MATCH with the system-made key.");
+                Console.WriteLine($"The inputted decryption key is INVALID.");
             }
         }
-        public void SendData()
+        private void decrypt_message()
         {
-            message_value send_data = new message_value(decrypted_arr);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("[LOG] \t\t");
+            Console.ResetColor();
+            Console.WriteLine($"Converting of each ASCII value into a character.");
+
+            foreach (long value in decrypted_arr)
+            {
+                for (int i = 0; i < ascii_value.Length; i++)
+                {
+                    if (value == ascii_value[i])
+                    {
+                        decrypted_arr[value] = _char[i];
+                        break;
+                    }
+                }
+                Console.WriteLine(value);
+            }
         }
     }
 }

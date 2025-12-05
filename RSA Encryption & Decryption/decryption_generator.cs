@@ -21,17 +21,7 @@
             Console.WriteLine($"The data has been SENT to the instance.");
             data_decryption_key_gen();
         }
-        public long priv_prime_d
-        {
-            get
-            {
-                return prime_d;
-            }
-            set
-            {
-                prime_d = value;
-            }
-        }
+
         public void data_decryption_key_gen()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;

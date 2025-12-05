@@ -85,16 +85,20 @@ namespace RSA_Encryption___Decryption
                             Console.ResetColor();
 
                             message.message(message_input);
+
+                            Console.ForegroundColor = ConsoleColor.White;
                             Console.WriteLine("\n---------------------------------------------------------------------------------------------------\n");
+                            Console.ResetColor();
 
                             bool looped4 = true;
                             while (looped4)
                             {
                                 Console.Write("Would you like to input your message again? (y/n) ");
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("(IF TYPED 'y/Y', YOUR PREVIOUS MESSAGE AND ITS DATA WILL NOT BE SAVED)");
+                                Console.Write("(IF TYPED 'y/Y', YOUR PREVIOUS MESSAGE AND ITS DATA WILL NOT BE SAVED.)");
                                 Console.ResetColor();
                                 Console.Write(": ");
+
                                 Console.ForegroundColor = ConsoleColor.White;
                                 string back_option = Console.ReadLine();
                                 Console.ResetColor();
@@ -132,17 +136,39 @@ namespace RSA_Encryption___Decryption
                         bool looped3 = true;
                         while (looped3)
                         {
+                            decryption_message decrypt = new decryption_message();
+
                             Console.ForegroundColor = ConsoleColor.White;
                             Console.WriteLine("\t===================================RSA Decryption===================================\n");
                             Console.ResetColor();
 
+                            Console.Write("Encrypted Message (e.g. '10203920 2303923 0239320 ...'): ");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            string enc_mes_input = Console.ReadLine();
+                            Console.ResetColor();
+                            Console.WriteLine();
+
+                            decrypt.add_arr(enc_mes_input);
+
+                            Console.Write("Prime Key: ");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            string prim_key_input = Console.ReadLine();
+                            long prim_key_input_value = Convert.ToInt64(prim_key_input);
+                            Console.ResetColor();
+                            Console.WriteLine();
+
                             Console.Write("Decryption Key: ");
                             Console.ForegroundColor = ConsoleColor.White;
-                            //string message_input = Console.ReadLine();
-                            //long message_input_value = Convert.ToInt64(message_input);
-                            Console.ResetColor();
 
-                            //decrypt.data_decryption_message(message_input_value);
+                            string decr_key_input = Console.ReadLine();
+                            long decry_key_input_value = Convert.ToInt64(decr_key_input);
+                            Console.ResetColor();
+                            Console.WriteLine();
+
+                            decrypt.data_decryption_message(prim_key_input_value, decry_key_input_value);
+
                             Console.WriteLine("\n---------------------------------------------------------------------------------------------------\n");
 
                             bool looped4 = true;
@@ -153,6 +179,7 @@ namespace RSA_Encryption___Decryption
                                 Console.Write("(IF TYPED 'y/Y', YOUR PREVIOUS MESSAGE AND ITS DATA WILL NOT BE SAVED)");
                                 Console.ResetColor();
                                 Console.Write(": ");
+
                                 Console.ForegroundColor = ConsoleColor.White;
                                 string back_option = Console.ReadLine();
                                 Console.ResetColor();
