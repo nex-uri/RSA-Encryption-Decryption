@@ -72,7 +72,7 @@ namespace RSA_Encryption___Decryption
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[ERROR] \t\t");
+                Console.Write("[ERROR] \t");
                 Console.ResetColor();
                 Console.WriteLine($"Failed to encrypt.");
             }

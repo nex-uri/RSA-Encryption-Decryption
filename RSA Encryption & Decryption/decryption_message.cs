@@ -9,6 +9,7 @@ namespace RSA_Encryption___Decryption
         private readonly long[] ascii_value;
         private long[] decrypted_arr;
         private char[] decrypted_char_arr;
+        private string number;
         public int index;
         public int conv_index;
         public int trigger;
@@ -52,6 +53,7 @@ namespace RSA_Encryption___Decryption
             ];
             decrypted_arr = Array.Empty<long>();
             decrypted_char_arr = Array.Empty<char>();
+            number = "";
             index = -1;
             conv_index = -1;
             trigger = -1;
@@ -71,7 +73,9 @@ namespace RSA_Encryption___Decryption
         }
         public void add_arr(string data_arr)
         {
-            string character = "";
+            Console.Clear();
+            Console.WriteLine("\n---------------------------------------------------------------------------------------------------");
+
             foreach (char c in data_arr)
             {
                 if (char.IsWhiteSpace(c))
@@ -79,53 +83,29 @@ namespace RSA_Encryption___Decryption
                     index++;
                     IncreaseSize();
 
-                    long converted_value = Convert.ToInt64(character);
+                    long converted_value = Convert.ToInt64(number);
                     decrypted_arr[index] = converted_value;
-                    character = "";
+                    number = "";
+                    trigger = 0;
+                }
+                else if (char.IsLetter(c))
+                {
+                    trigger = -2;
+                    break;
                 }
                 else
                 {
-                    character += c;
+                    number += c;
+                    trigger = 0;
                 }
             }
-            index++;
-            IncreaseSize();
 
-            long converted_value_end = Convert.ToInt64(character);
-            decrypted_arr[index] = converted_value_end;
-            character = "";
-        }
-        public void data_decryption_message(long prime_key_n, long decryption_key)
-        {
-            Console.Clear();
-            Console.WriteLine("\n---------------------------------------------------------------------------------------------------");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[LOG] \t\t");
-            Console.ResetColor();
-            Console.WriteLine($"Decrypting the message...");
-
-            int trigger = -1;
-
-            if (decryption_key != 0)
+            if (trigger == 0)
             {
-                for (int i = 0; i < decrypted_arr.Length; i++)
+                foreach (char c in number)
                 {
-                    decrypted_arr[i] = (long)BigInteger.ModPow(decrypted_arr[i], decryption_key, prime_key_n);
-
-                    if (decrypted_arr[i] > 0)
+                    if (char.IsLetter(c))
                     {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("[OK] \t\t");
-                        Console.ResetColor();
-                        Console.WriteLine($"A single encrypted block has been DECRYPTED into message values.");
-                        trigger = 0;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("[ERROR] \t\t");
-                        Console.ResetColor();
-                        Console.WriteLine($"Failed to decrypt.");
                         trigger = -1;
                         break;
                     }
@@ -133,11 +113,104 @@ namespace RSA_Encryption___Decryption
 
                 if (trigger == 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write("[LOG] \t\t");
+                    index++;
+                    IncreaseSize();
+
+                    long converted_value_end = Convert.ToInt64(number);
+                    decrypted_arr[index] = converted_value_end;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("[ERROR] \t");
                     Console.ResetColor();
-                    Console.WriteLine($"Sending the data to another instance for an output.");
-                    decrypt_message();
+                    Console.WriteLine($"Failed to add into an array variable.");
+                }
+            }
+            else if (trigger == -2)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("[ERROR] \t");
+                Console.ResetColor();
+                Console.WriteLine($"Failed to add into an array variable.");
+            }
+            number = "";
+            trigger = -1;
+        }
+        public void data_decryption_message(string prime_key_n, string decryption_key)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("[LOG] \t\t");
+            Console.ResetColor();
+            Console.WriteLine($"Decrypting the message...");
+
+            string prime_key_n_trimmed = prime_key_n.Trim();
+            foreach (char c in prime_key_n_trimmed)
+            {
+                if (char.IsLetter(c))
+                {
+                    trigger = -1;
+                    break;
+                }
+                else trigger = 0;
+            }
+
+            string decryption_key_trimmed = decryption_key.Trim();
+            foreach (char c in decryption_key_trimmed)
+            {
+                if (char.IsLetter(c))
+                {
+                    trigger = -1;
+                    break;
+                }
+                else trigger = 0;
+            }
+
+            if (trigger == 0)
+            {
+                long prime_key_converted = Convert.ToInt64(prime_key_n_trimmed);
+                long decryption_key_converted = Convert.ToInt64(decryption_key_trimmed);
+
+                trigger = -1;
+
+                if (decryption_key_converted != 0)
+                {
+                    for (int i = 0; i < decrypted_arr.Length; i++)
+                    {
+                        decrypted_arr[i] = (long)BigInteger.ModPow(decrypted_arr[i], decryption_key_converted, prime_key_converted);
+
+                        if (decrypted_arr[i] > 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.Write("[OK] \t\t");
+                            Console.ResetColor();
+                            Console.WriteLine($"A single encrypted block has been DECRYPTED into message values.");
+                            trigger = 0;
+                        }
+                        else
+                        {
+                            trigger = -1;
+                            break;
+                        }
+                    }
+
+                    if (trigger == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("[LOG] \t\t");
+                        Console.ResetColor();
+                        Console.WriteLine($"Sending the data to another instance for an output.");
+                        decrypt_message();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("[ERROR] \t");
+                        Console.ResetColor();
+                        Console.WriteLine($"Failed to decrypt.");
+                    }
+
+                    trigger = -1;
                 }
             }
             else
@@ -145,7 +218,7 @@ namespace RSA_Encryption___Decryption
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("[ERROR] \t");
                 Console.ResetColor();
-                Console.WriteLine($"The inputted decryption key is INVALID.");
+                Console.WriteLine($"Invalid Input.");
             }
         }
         private void decrypt_message()
@@ -198,10 +271,12 @@ namespace RSA_Encryption___Decryption
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[ERROR] \t\t");
+                Console.Write("[ERROR] \t");
                 Console.ResetColor();
                 Console.WriteLine($"Failed to convert.");
             }
+
+            trigger = -1;
         }
         private void SendData()
         {

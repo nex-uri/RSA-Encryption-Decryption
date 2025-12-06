@@ -113,7 +113,7 @@
             if (prime_n < 0 && prime_on < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[ERROR] \t\t");
+                Console.Write("[ERROR] \t");
                 Console.ResetColor();
                 Console.WriteLine($"Failed to generate prime keys.");
             }

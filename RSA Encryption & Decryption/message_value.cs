@@ -111,7 +111,7 @@
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("[ERROR] \t\t");
+                    Console.Write("[ERROR] \t");
                     Console.ResetColor();
                     Console.WriteLine($"Failed converting them to ASCII values.");
                 }
@@ -119,7 +119,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[ERROR] \t\t");
+                Console.Write("[ERROR] \t");
                 Console.ResetColor();
                 Console.WriteLine($"The inputted text does not support to any character from Windows.");
             }
