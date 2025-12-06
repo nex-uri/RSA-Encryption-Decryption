@@ -1,7 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using System.Security.Cryptography.X509Certificates;
-
-namespace RSA_Encryption___Decryption
+﻿namespace RSA_Encryption___Decryption
 {
     internal class Program
     {
@@ -12,13 +9,6 @@ namespace RSA_Encryption___Decryption
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("===================================RSA Encryption & Decryption===================================\n");
-                Console.ResetColor();
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("[DISCLAIMER] ");
-                Console.ResetColor();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("This program WILL NOT SAVE all your inputted data as it does not have its own database to save data. It will be implemented soon!\n");
                 Console.ResetColor();
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -169,7 +159,7 @@ namespace RSA_Encryption___Decryption
 
                             decrypt.data_decryption_message(prim_key_input_value, decry_key_input_value);
 
-                            Console.WriteLine("---------------------------------------------------------------------------------------------------\n");
+                            Console.WriteLine("\n---------------------------------------------------------------------------------------------------\n");
 
                             bool looped4 = true;
                             while (looped4)

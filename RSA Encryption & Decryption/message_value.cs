@@ -6,6 +6,7 @@
         private readonly long[] ascii_value;
         private long[] value;
         public int index;
+        public int trigger;
 
         public message_value()
         {
@@ -46,6 +47,7 @@
             ];
             value = Array.Empty<long>();
             index = -1;
+            trigger = -1;
         }
 
         private void IncreaseSize()
@@ -79,20 +81,38 @@
                             IncreaseSize();
 
                             value[index] = ascii_value[i];
+
+                            trigger = 0;
+                            break;
+                        }
+                        else
+                        {
+                            trigger = -1;
                             break;
                         }
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("[OK] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"Each of charater in a whole message has been CONVERTED to ASCII values.");
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("[LOG] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"Sending the data to another instance in order to generate prime keys.");
-                SendData();
+                if (trigger == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("[OK] \t\t");
+                    Console.ResetColor();
+                    Console.WriteLine($"Each of charater in a whole message has been CONVERTED to ASCII values.");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("[LOG] \t\t");
+                    Console.ResetColor();
+                    Console.WriteLine($"Sending the data to another instance in order to generate prime keys.");
+                    SendData();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("[ERROR] \t\t");
+                    Console.ResetColor();
+                    Console.WriteLine($"Failed converting them to ASCII values.");
+                }
             }
             else
             {
@@ -100,13 +120,6 @@
                 Console.Write("[ERROR] \t\t");
                 Console.ResetColor();
                 Console.WriteLine($"The inputted text does not support to any character from Windows.");
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("[LOG] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"This application will forcefully close in 3 seconds...");
-                Thread.Sleep(3000);
-                Environment.Exit(0);
             }
         }
         private void SendData()

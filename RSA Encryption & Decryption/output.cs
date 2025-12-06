@@ -2,9 +2,10 @@
 {
     internal class output_ed
     {
-        private long receiver_prime_d;
-        private long receiver_prime_n;
-        private long[] receiver_encrypted_arr;
+        private readonly long receiver_prime_d;
+        private readonly long receiver_prime_n;
+        private readonly long[] receiver_encrypted_arr;
+        private readonly char[] receiver_decrypted_arr;
 
         public output_ed(long decryption_key, long prime_key_n, long[] data_arr)
         {
@@ -20,6 +21,19 @@
             Console.WriteLine("---------------------------------------------------------------------------------------------------");
             Console.ResetColor();
             enc_data_output();
+        }
+        public output_ed(char[] decrypted_arr)
+        {
+            receiver_decrypted_arr = decrypted_arr;
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("[OK] \t\t");
+            Console.ResetColor();
+            Console.WriteLine($"The data has been SENT to the instance.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("---------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+            dec_data_output();
         }
 
         public void enc_data_output()
@@ -42,10 +56,10 @@
             Console.Write("[ENCRYPTED MESSAGE] \t");
             Console.ResetColor();
 
-            for (int i = 0; i < receiver_encrypted_arr.Length; i++)
+            foreach (char c in receiver_encrypted_arr)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"{receiver_encrypted_arr[i]} ");
+                Console.Write($"{c} ");
                 Console.ResetColor();
             }
 
@@ -64,6 +78,26 @@
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write($"{receiver_prime_d}");
             Console.ResetColor();
+        }
+        public void dec_data_output()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n\n\t===================================Output===================================\n");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("---------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("[DECRYPTED MESSAGE] \t");
+            Console.ResetColor();
+
+            foreach (char c in receiver_decrypted_arr)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(c);
+                Console.ResetColor();
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ namespace RSA_Encryption___Decryption
         private char[] decrypted_char_arr;
         public int index;
         public int conv_index;
+        public int trigger;
 
         public decryption_message()
         {
@@ -53,17 +54,19 @@ namespace RSA_Encryption___Decryption
             decrypted_char_arr = Array.Empty<char>();
             index = -1;
             conv_index = -1;
+            trigger = -1;
         }
 
         private void IncreaseSize()
         {
             long[] new_size_arr = new long[decrypted_arr.Length + 1];
-            char[] char_new_size_arr = new char[decrypted_arr.Length + 1];
             for (int i = 0; i < decrypted_arr.Length; i++)
             {
                 new_size_arr[i] = decrypted_arr[i];
             }
             decrypted_arr = new_size_arr;
+
+            char[] char_new_size_arr = new char[decrypted_arr.Length + 1];
             decrypted_char_arr = char_new_size_arr;
         }
         public void add_arr(string data_arr)
@@ -113,7 +116,7 @@ namespace RSA_Encryption___Decryption
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("[OK] \t\t");
                         Console.ResetColor();
-                        Console.WriteLine($"A single encrypted message has been DECRYPTED.");
+                        Console.WriteLine($"A single encrypted block has been DECRYPTED into message values.");
                         trigger = 0;
                     }
                     else
@@ -129,11 +132,6 @@ namespace RSA_Encryption___Decryption
 
                 if (trigger == 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("[SUCCESS] \t");
-                    Console.ResetColor();
-                    Console.WriteLine($"The message has been DECRYPTED.");
-
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write("[LOG] \t\t");
                     Console.ResetColor();
@@ -156,20 +154,57 @@ namespace RSA_Encryption___Decryption
             Console.ResetColor();
             Console.WriteLine($"Converting of each ASCII value into a character.");
 
-            conv_index++;
             foreach (long val in decrypted_arr)
             {
+                bool found = false;
                 for (int i = 0; i < ascii_value.Length; i++)
                 {
                     if (ascii_value[i] == val)
                     {
+                        conv_index++;
                         decrypted_char_arr[conv_index] = _char[i];
-                        Console.WriteLine(decrypted_char_arr[conv_index]);
+
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("[OK] \t\t");
+                        Console.ResetColor();
+                        Console.WriteLine($"A single character has been DECRYPTED.");
+
+                        trigger = 0;
+                        found = true;
                         break;
                     }
                 }
+                if (!found)
+                {
+                    trigger = -1;
+                }
             }
             conv_index = -1;
+
+            if (trigger == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("[SUCCESS] \t");
+                Console.ResetColor();
+                Console.WriteLine($"The message has been DECRYPTED.");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("[LOG] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Sending the data to another instance for an output.");
+                SendData();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("[ERROR] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Failed to convert.");
+            }
+        }
+        private void SendData()
+        {
+            output_ed send_data = new output_ed(decrypted_char_arr);
         }
     }
 }

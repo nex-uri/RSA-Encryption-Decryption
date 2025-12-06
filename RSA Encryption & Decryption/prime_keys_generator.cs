@@ -12,30 +12,13 @@
 
         public prime_keys_generator(long[] arr)
         {
-            if (arr is long[])
-            {
-                receiver_data_arr = arr;
+            receiver_data_arr = arr;
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("[OK] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"The data has been SENT to the instance.");
-                data_largest_value();
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[ERROR] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"The data is invalid to a specified variable.");
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("[LOG] \t\t");
-                Console.ResetColor();
-                Console.WriteLine($"This application will forcefully close in 3 seconds...");
-                Thread.Sleep(3000);
-                Environment.Exit(0);
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("[OK] \t\t");
+            Console.ResetColor();
+            Console.WriteLine($"The data has been SENT to the instance.");
+            data_largest_value();
         }
 
         private void data_largest_value()
@@ -127,16 +110,26 @@
             prime_n = prime_p * prime_q;
             prime_on = (prime_p - 1) * (prime_q - 1);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("[SUCCESS] \t");
-            Console.ResetColor();
-            Console.WriteLine($"The prime keys have been GENERATED. {prime_p} {prime_q} {prime_on}");
+            if (prime_n < 0 && prime_on < 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("[SUCCESS] \t");
+                Console.ResetColor();
+                Console.WriteLine($"The prime keys have been GENERATED.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[LOG] \t\t");
-            Console.ResetColor();
-            Console.WriteLine($"Sending the data to another instance in order to generate encryption key.");
-            SendData();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("[LOG] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Sending the data to another instance in order to generate encryption key.");
+                SendData();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("[ERROR] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Failed to generate prime keys.");
+            }
         }
         private void SendData()
         {

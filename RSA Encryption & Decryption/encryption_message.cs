@@ -9,6 +9,7 @@ namespace RSA_Encryption___Decryption
         private readonly long receiver_prime_d;
         private readonly long receiver_prime_n;
         private long[] encrypted_arr;
+        public int trigger;
 
         public encryption_message(long encryption_key, long decryption_key, long prime_key_n, long[] data_arr)
         {
@@ -18,6 +19,8 @@ namespace RSA_Encryption___Decryption
             receiver_prime_n = prime_key_n;
 
             encrypted_arr = new long[receiver_data_arr.Length];
+
+            trigger = -1;
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("[OK] \t\t");
@@ -43,33 +46,36 @@ namespace RSA_Encryption___Decryption
                     Console.Write("[OK] \t\t");
                     Console.ResetColor();
                     Console.WriteLine($"A single character has been ENCRYPTED.");
+
+                    trigger = 0;
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("[ERROR] \t\t");
-                    Console.ResetColor();
-                    Console.WriteLine($"Failed to encrypt.");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write("[LOG] \t\t");
-                    Console.ResetColor();
-                    Console.WriteLine($"This application will forcefully close in 3 seconds...");
-                    Thread.Sleep(3000);
-                    Environment.Exit(0);
+                    trigger = -1;
                     break;
                 }
             }
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("[SUCCESS] \t");
-            Console.ResetColor();
-            Console.WriteLine($"The message has been ENCRYPTED.");
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("[LOG] \t\t");
-            Console.ResetColor();
-            Console.WriteLine($"Sending the data to another instance for an output.");
-            SendData();
+            if (trigger == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("[SUCCESS] \t");
+                Console.ResetColor();
+                Console.WriteLine($"The message has been ENCRYPTED.");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("[LOG] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Sending the data to another instance for an output.");
+                SendData();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("[ERROR] \t\t");
+                Console.ResetColor();
+                Console.WriteLine($"Failed to encrypt.");
+            }
         }
         private void SendData()
         {
