@@ -36,7 +36,7 @@
             dec_data_output();
         }
 
-        public void enc_data_output()
+        private void enc_data_output()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n\n\t===================================Output===================================\n");
@@ -79,7 +79,7 @@
             Console.Write($"{receiver_prime_d}");
             Console.ResetColor();
         }
-        public void dec_data_output()
+        private void dec_data_output()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n\n\t===================================Output===================================\n");
