@@ -193,10 +193,19 @@
                     }
                     else if (input != null && input == "3")
                     {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\n---------------------------------------------------------------------------------------------------");
+                        Console.ResetColor();
+
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("[OK] ");
                         Console.ResetColor();
-                        Console.WriteLine("Valid Input. Exiting the program...\n\n");
+                        Console.WriteLine("Valid Input. Exiting the program...");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("---------------------------------------------------------------------------------------------------");
+                        Console.ResetColor();
 
                         looped1 = false;
                         looped2 = false;
